@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menghitung Luas</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 20px;
+        }
+        
+        h1,
+        h2 {
+            color: #333;
+        }
+        
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        
+        input {
+            margin-bottom: 10px;
+        }
+        
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Menghitung Luas Persegi Panjang, Bujur Sangkar, dan Segitiga</h1>
+
+    <!-- Input dan Output Persegi Panjang -->
+    <h2>Persegi Panjang</h2>
+    <label for="panjang">Panjang :</label>
+    <input type="number" id="panjang" placeholder="Masukkan panjang"> <br>
+    <label for="lebar">Lebar :</label>
+    <input type="number" id="lebar" placeholder="Masukkan lebar"> <br>
+    <button onclick="hitungLuasPersegiPanjang()">Hitung Luas Persegi Panjang</button>
+    <div class="output" id="hasilPersegiPanjang"></div>
+
+    <!-- Input dan Output Bujur Sangkar -->
+    <h2>Bujur Sangkar</h2>
+    <label for="sisi">Sisi :</label>
+    <input type="number" id="sisi" placeholder="Masukkan sisi"> <br>
+    <button onclick="hitungLuasBujurSangkar()">Hitung Luas Bujur Sangkar</button>
+    <div class="output" id="hasilBujurSangkar"></div>
+
+    <!-- Input dan Output Segitiga -->
+    <h2>Segitiga</h2>
+    <label for="alas">Alas :</label>
+    <input type="number" id="alas" placeholder="Masukkan alas"> <br>
+    <label for="tinggi">Tinggi :</label>
+    <input type="number" id="tinggi" placeholder="Masukkan tinggi"> <br>
+    <button onclick="hitungLuasSegitiga()">Hitung Luas Segitiga</button>
+    <div class="output" id="hasilSegitiga"></div>
+
+    <script>
+        // Fungsi untuk menghitung luas persegi panjang
+        function hitungLuasPersegiPanjang() {
+            let panjang = document.getElementById("panjang").value;
+            let lebar = document.getElementById("lebar").value;
+            if (panjang && lebar) {
+                let luas = panjang * lebar;
+                document.getElementById("hasilPersegiPanjang").innerText = "Hasil perhitungan luas persegi panjang : " + luas;
+            } else {
+                alert("Masukkan nilai panjang dan lebar!");
+            }
+        }
+
+        // Fungsi untuk menghitung luas bujur sangkar
+        function hitungLuasBujurSangkar() {
+            let sisi = document.getElementById("sisi").value;
+            if (sisi) {
+                let luas = sisi * sisi;
+                document.getElementById("hasilBujurSangkar").innerText = "Hasil perhitungan luas bujur sangkar : " + luas;
+            } else {
+                alert("Masukkan nilai sisi!");
+            }
+        }
+
+        // Fungsi untuk menghitung luas segitiga
+        function hitungLuasSegitiga() {
+            let alas = document.getElementById("alas").value;
+            let tinggi = document.getElementById("tinggi").value;
+            if (alas && tinggi) {
+                let luas = (alas * tinggi) / 2;
+                document.getElementById("hasilSegitiga").innerText = "Hasil perhitungan luas segitiga : " + luas;
+            } else {
+                alert("Masukkan nilai alas dan tinggi!");
+            }
+        }
+    </script>
+</body>
+
+</html>
