@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Transportasi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        
+        h1,
+        h2 {
+            text-align: center;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Sistem Manajemen Transportasi</h1>
+
+    <!-- Form Input Pelanggan -->
+    <h2>@nadira.rental_</h2>
+    <label for="namaPelanggan">Nama Pelanggan:</label>
+    <input type="text" id="namaPelanggan" placeholder="Masukkan nama pelanggan">
+    <label for="nomorTelepon">Nomor Telepon:</label>
+    <input type="text" id="nomorTelepon" placeholder="Masukkan nomor telepon">
+    <label for="jenisKendaraan">Pilih Kendaraan:</label>
+    <select id="jenisKendaraan">
+        <option value="Mobil"> Microbus Elf</option>
+        <option value="Motor">Mobil</option>
+        <option value="Sepeda">Motor</option>
+    </select>
+    <label for="tanggalPinjam">Tanggal Pinjam:</label>
+    <input type="date" id="tanggalPinjam">
+    <label for="tanggalKembali">Tanggal Kembali:</label>
+    <input type="date" id="tanggalKembali">
+    <button onclick="tambahPelanggan()">Tambah Pelanggan</button>
+
+    <!--  Daftar Pelanggan -->
+    <h2>Daftar Pelanggan</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Pelanggan</th>
+                <th>Nomor Telepon</th>
+                <th>Kendaraan Disewa</th>
+                <th>Tanggal Pinjam</th>
+                <th>Tanggal Kembali</th>
+                <th>Durasi Pinjam</th>
+            </tr>
+        </thead>
+        <tbody id="daftarPelanggan"></tbody>
+    </table>
+
+    <script>
+        // Class Kendaraan
+        class Kendaraan {
+            constructor(jenis) {
+                this.jenis = jenis;
+            }
+        }
+
+        // Class Pelanggan
+        class Pelanggan {
+            constructor(nama, nomorTelepon, kendaraan, tanggalPinjam, tanggalKembali) {
+                this.nama = nama;
+                this.nomorTelepon = nomorTelepon;
+                this.kendaraan = kendaraan;
+                this.tanggalPinjam = tanggalPinjam;
+                this.tanggalKembali = tanggalKembali;
+                this.durasi = this.hitungDurasi();
+            }
+
+            // Method untuk menghitung durasi peminjaman
+            hitungDurasi() {
+                const tanggal1 = new Date(this.tanggalPinjam);
+                const tanggal2 = new Date(this.tanggalKembali);
+                const selisih = tanggal2 - tanggal1; // Selisih dalam milidetik
+                return Math.ceil(selisih / (1000 * 60 * 60 * 24)); // Konversi ke hari
+            }
+        }
+
+        // Array untuk menyimpan data pelanggan
+        let daftarPelanggan = [];
+
+        // Fungsi untuk menambahkan pelanggan
+        function tambahPelanggan() {
+            // Ambil nilai dari input form
+            const nama = document.getElementById("namaPelanggan").value;
+            const nomorTelepon = document.getElementById("nomorTelepon").value;
+            const jenisKendaraan = document.getElementById("jenisKendaraan").value;
+            const tanggalPinjam = document.getElementById("tanggalPinjam").value;
+            const tanggalKembali = document.getElementById("tanggalKembali").value;
+
+            // Validasi input
+            if (!nama || !nomorTelepon || !jenisKendaraan || !tanggalPinjam || !tanggalKembali) {
+                alert("Mohon isi semua data dengan benar.");
+                return;
+            }
+
+            // Buat objek kendaraan dan pelanggan
+            const kendaraan = new Kendaraan(jenisKendaraan);
+            const pelanggan = new Pelanggan(nama, nomorTelepon, kendaraan, tanggalPinjam, tanggalKembali);
+
+            // Tambahkan pelanggan ke daftar
+            daftarPelanggan.push(pelanggan);
+
+            // Tampilkan daftar pelanggan
+            tampilkanDaftarPelanggan();
+
+            // Reset form
+            document.getElementById("namaPelanggan").value = "";
+            document.getElementById("nomorTelepon").value = "";
+            document.getElementById("tanggalPinjam").value = "";
+            document.getElementById("tanggalKembali").value = "";
+        }
+
+        // Fungsi untuk menampilkan daftar pelanggan
+        function tampilkanDaftarPelanggan() {
+            const tabel = document.getElementById("daftarPelanggan");
+            tabel.innerHTML = ""; // Kosongkan tabel sebelum diisi ulang
+
+            // Loop melalui array daftarPelanggan dan tampilkan data
+            daftarPelanggan.forEach((pelanggan) => {
+                const row = `<tr>
+                    <td>${pelanggan.nama}</td>
+                    <td>${pelanggan.nomorTelepon}</td>
+                    <td>${pelanggan.kendaraan.jenis}</td>
+                    <td>${pelanggan.tanggalPinjam}</td>
+                    <td>${pelanggan.tanggalKembali}</td>
+                    <td>${pelanggan.durasi}</td>
+                </tr>`;
+                tabel.innerHTML += row;
+            });
+        }
+    </script>
+</body>
+
+</html>
