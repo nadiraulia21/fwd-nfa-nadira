@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Produk Nadira Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f2f5;
+            margin: 20px;
+            color: #333;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        input,
+        button {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #000000;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Manajemen Produk Toko Online</h1>
+    <!-- Form Input Produk -->
+    <h2>Tambah Produk Baru</h2>
+    <label for="productId">ID Produk:</label>
+    <input type="number" id="productId" placeholder="Masukkan ID">
+
+    <label for="productName">Nama Produk:</label>
+    <input type="text" id="productName" placeholder="Masukkan nama produk">
+
+    <label for="productPrice">Harga Produk:</label>
+    <input type="number" id="productPrice" placeholder="Masukkan harga">
+
+    <button onclick="tambahProduk()">Tambah Produk</button>
+    <button onclick="tampilkanProduk()">Tampilkan Semua Produk</button>
+
+    <!-- Daftar Produk -->
+    <h2>Daftar Produk</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Harga</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="productList"></tbody>
+    </table>
+
+    <script>
+        // Data produk awal (minimal 5 produk)
+        let produkList = [{
+            id: 1,
+            nama: "Laptop",
+            harga: 12000000
+        }, {
+            id: 2,
+            nama: "Smartphone",
+            harga: 5000000
+        }, {
+            id: 3,
+            nama: "Tablet",
+            harga: 7000000
+        }, {
+            id: 4,
+            nama: "Headphone",
+            harga: 1500000
+        }, {
+            id: 5,
+            nama: "Mouse",
+            harga: 300000
+        }];
+
+        // Fungsi untuk menambahkan produk
+        function tambahProduk() {
+            const id = parseInt(document.getElementById('productId').value);
+            const nama = document.getElementById('productName').value;
+            const harga = parseInt(document.getElementById('productPrice').value);
+
+            if (!id || !nama || !harga) {
+                alert('Harap isi semua data!');
+                return;
+            }
+
+            // Cek apakah ID sudah ada
+            if (produkList.some(produk => produk.id === id)) {
+                alert('ID produk sudah digunakan!');
+                return;
+            }
+
+            // Tambahkan produk baru menggunakan spread operator
+            produkList = [...produkList, {
+                id,
+                nama,
+                harga
+            }];
+            alert(`Produk ${nama} berhasil ditambahkan!`);
+
+            // Reset form
+            document.getElementById('productId').value = '';
+            document.getElementById('productName').value = '';
+            document.getElementById('productPrice').value = '';
+
+            // Tampilkan produk terbaru
+            tampilkanProduk();
+        }
+
+        // Fungsi untuk menghapus produk menggunakan rest parameter
+        function hapusProduk(id) {
+            // Gunakan filter untuk membuat array baru tanpa produk dengan ID tersebut
+            produkList = produkList.filter(produk => produk.id !== id);
+            alert(`Produk dengan ID ${id} berhasil dihapus!`);
+            tampilkanProduk();
+        }
+
+        // Fungsi untuk menampilkan produk menggunakan destructuring
+        function tampilkanProduk() {
+            const tableBody = document.getElementById('productList');
+            tableBody.innerHTML = '';
+
+            produkList.forEach(({
+                id,
+                nama,
+                harga
+            }) => {
+                const row = `
+                    <tr>
+                        <td>${id}</td>
+                        <td>${nama}</td>
+                        <td>Rp${harga.toLocaleString()}</td>
+                        <td>
+                            <button class="delete-btn" onclick="hapusProduk(${id})">Hapus</button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        // Tampilkan produk saat halaman pertama kali dimuat
+        tampilkanProduk();
+    </script>
+</body>
+
+</html>
